@@ -1,0 +1,12 @@
+UNIX commands:
+	cp <source> <desitination>
+		cp = copy
+	rm <filename>
+		rm = remove
+	mkdir <directory>
+		mkdir = make directory
+	ls -l
+		ls -l = list all information
+	cp ../<filename> .
+		.. = up one path copy file . = to here with same name
+	rm -r = erase folder and everything inside it (recussive)
