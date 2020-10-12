@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#Leah Kuhn
 
 import sys
 from decimal import Decimal
