@@ -54,18 +54,6 @@ for line in lines:
 f.close()
 #sys.exit()
 
-#user_in=input("Insert name for output file as 'filename.out':  ")
-
-# Format new .pdb file
-f=open(sys.argv[2], 'w')
-for tmp in tmplist:
-    sent="{:6}{:>5d} {:4} {:3} {}{:>4} {:>11.3f}{:>-8.3f}{:>8.3f}{:6.2f}{:6.2f}{:>12}\n"
-    f.write(sent.format(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6], tmp[7], tmp[8], tmp[9], tmp[10], tmp[11]))
-f.close()
-
-print("Data from .pdb file saved to:", sys.argv[2])
-print("          ____________________          ")
-    
 
 # Get user input for geometric center or center of mass
 center=int(input("\nCalculate geometric center [0] or center of mass [1]?  "))
@@ -80,13 +68,13 @@ if center == 1:
 
     for x in range(0, len(tmplist)):
         # sum(mass*x_coordinate)
-        x_individ=tmplist[x][12] + tmplist[x][6]
+        x_individ=tmplist[x][12] * tmplist[x][6]
         sum_x = sum_x + x_individ
         # sum(mass*y_coordinate)
-        y_individ=tmplist[x][12] + tmplist[x][7]
+        y_individ=tmplist[x][12] * tmplist[x][7]
         sum_y = sum_y + y_individ
         # sum(mass*z_coordinate)
-        z_individ=tmplist[x][12] + tmplist[x][8]
+        z_individ=tmplist[x][12] * tmplist[x][8]
         sum_z = sum_z + z_individ
         # sum of mass
         mass = mass + tmplist[x][12]
@@ -96,9 +84,19 @@ if center == 1:
     y_coor = sum_y / mass
     z_coor = sum_z / mass
 
+    # subtract center of mass coordinates from all atom coordinates
+    for x in range (0, len(tmplist)):
+        tmpx = tmplist[x][6]
+        tmpy = tmplist[x][7]
+        tmpz = tmplist[x][8]
+
+        tmplist[x][6] = tmpx - x_coor
+        tmplist[x][7] = tmpy - y_coor
+        tmplist[x][8] = tmpz - z_coor
+
     # Print output to user
-    output="Center of mass coordinates: ({:.2f}, {:.2f}, {:.2f})"
-    print(output.format(x_coor, y_coor, z_coor))
+    #output="Center of mass coordinates: ({:.2f}, {:.2f}, {:.2f})"
+    #print(output.format(x_coor, y_coor, z_coor))
 
   
     
@@ -120,13 +118,23 @@ elif center == 0:
         z_sum = z_sum + z_i
 
     # geometric center = sum of coordinates / number of coordiantes
-    x_avg = x_sum / (len(tmplist) + 1)
-    y_avg = y_sum / (len(tmplist) + 1)
-    z_avg = z_sum / (len(tmplist) + 1)
+    x_avg = x_sum / len(tmplist)
+    y_avg = y_sum / len(tmplist)
+    z_avg = z_sum / len(tmplist)
 
     # Print output to user
-    output = "Geometric center coordinates: ({:.2f}, {:.2f}, {:.2f})"
-    print(output.format(x_avg, y_avg, z_avg))
+    #output = "Geometric center coordinates: ({:.2f}, {:.2f}, {:.2f})"
+    #print(output.format(x_avg, y_avg, z_avg))
+
+    # subtract center of mass coordinates from all atom coordinates
+    for x in range (0, len(tmplist)):
+        tmpx = tmplist[x][6]
+        tmpy = tmplist[x][7]
+        tmpz = tmplist[x][8]
+
+        tmplist[x][6] = tmpx - x_avg
+        tmplist[x][7] = tmpy - y_avg
+        tmplist[x][8] = tmpz - z_avg
 
 # Give user error because did not follow directions   
 else:
@@ -134,4 +142,12 @@ else:
 
 
 
+# Format new .pdb file
+f=open(sys.argv[2], 'w')
+for tmp in tmplist:
+    sent="{:6}{:>5d} {:4} {:3} {}{:>4} {:>11.3f}{:>-8.3f}{:>8.3f}{:6.2f}{:6.2f}{:>12}\n"
+    f.write(sent.format(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6], tmp[7], tmp[8], tmp[9], tmp[10], tmp[11]))
+f.close()
 
+print("New coordinates for .pdb file saved to:", sys.argv[2])
+print("          ____________________          ")
