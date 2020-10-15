@@ -12,10 +12,10 @@ Usage: In order to use this code you need to provide a .pdb file and give a .out
 the .pdb file in.
 
 Job: This code will open the .pdb file and save the row data as a list of lists.  The code will then append the mass
-of the atom to the list.  Once this is completed the formatted output file will be generated.  Afterwards the code
-will ask the user if they want to calculate geometric center [0] or center of mass [1].  Depending on user input
-the code will calculate one or the other and print the coordinates for the user. If a invalid number is entered (not
-0 or 1) the code will tell the user to input either 0 or 1.
+of the atom to the list.  Afterwards the code will ask the user if they want to calculate geometric center [0] or
+center of mass [1].  Depending on user input the code will calculate one or the other and print the coordinates
+for the user. If a invalid number is entered (not 0 or 1) the code will tell the user to input either 0 or 1.
+The code will then move the center to the origin and return the new atom coordinates in the specified file.
 *****************************************************************************************************************
 """
 
